@@ -2,8 +2,11 @@ package com.d8corp.d8amelihovstest
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -11,17 +14,18 @@ class BottomDialog(val items: List<ListItem>, val position: Int) : BottomSheetDi
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
-        val view = View.inflate(context, R.layout.bottom_dialog, null)
+        val occurencies = computeOccurencies(items)
+        val view = ComposeView(requireContext()).apply { setContent {
+            Column(modifier = Modifier.padding(all = 15.dp)) {
+                DialogPosition(position)
+                repeat(3) {
+                    DialogOccurency(occurencies[it].char, occurencies[it].occurency)
+                }
+            }
+        } }
         dialog.setContentView(view)
 
         view.setOnClickListener { dismiss() }
-
-        view.findViewById<TextView>(R.id.current_screen).setText("List " + position)
-
-        val occurencies = computeOccurencies(items)
-        view.findViewById<TextView>(R.id.char_1).setText("${occurencies[0].char}: ${occurencies[0].occurency}")
-        view.findViewById<TextView>(R.id.char_2).setText("${occurencies[1].char}: ${occurencies[1].occurency}")
-        view.findViewById<TextView>(R.id.char_3).setText("${occurencies[2].char}: ${occurencies[2].occurency}")
 
         return dialog
     }
