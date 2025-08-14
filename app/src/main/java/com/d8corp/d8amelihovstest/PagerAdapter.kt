@@ -18,10 +18,10 @@ class PagerAdapter internal constructor(private val context: Context, private va
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.images.setImageResource(R.drawable.test)
-        holder.pageNumber.text = "" + (position + 1)
+        holder.pageNumber.text = "" + (position%size + 1)
     }
 
-    override fun getItemCount(): Int = size
+    override fun getItemCount(): Int = Int.MAX_VALUE
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var images: ImageView = itemView.findViewById(R.id.image)

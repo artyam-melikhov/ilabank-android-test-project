@@ -7,13 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.d8corp.d8amelihovstest.data.Data
 import com.d8corp.d8amelihovstest.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivityXML : AppCompatActivity() {
 
-    val dataset = ArrayList<List<ListItem>>()
+    val dataset = Data.dataset
     var currentPosition = 0
 
     private lateinit var binding: ActivityMainBinding
@@ -23,8 +24,6 @@ class MainActivityXML : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        initData()
 
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -65,14 +64,15 @@ class MainActivityXML : AppCompatActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                currentPosition = position
-                recyclerAdapter.updateData(dataset[position])
+                currentPosition = position%dataset.size
+                recyclerAdapter.updateData(dataset[currentPosition])
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
             }
         })
+        binding.pager.setCurrentItem(Int.MAX_VALUE/2 - (Int.MAX_VALUE/2%dataset.size), false)
 
         binding.search.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -95,53 +95,5 @@ class MainActivityXML : AppCompatActivity() {
         binding.fab.setOnClickListener({ v ->
             BottomDialog(recyclerAdapter.items, currentPosition + 1).show(supportFragmentManager, "btm_dlg_splash_init_err")
         })
-    }
-
-    fun initData() {
-        dataset.clear()
-
-        dataset.add(mutableListOf(
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "banana", subTitle = "sub banana"),
-            ListItem(title = "orange", subTitle = "sub orange"),
-            ListItem(title = "blueberry", subTitle = "sub blueberry"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "banana", subTitle = "sub banana"),
-            ListItem(title = "orange", subTitle = "sub orange"),
-            ListItem(title = "blueberry", subTitle = "sub blueberry"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "banana", subTitle = "sub banana"),
-            ListItem(title = "orange", subTitle = "sub orange"),
-            ListItem(title = "blueberry", subTitle = "sub blueberry"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "banana", subTitle = "sub banana"),
-            ListItem(title = "orange", subTitle = "sub orange"),
-            ListItem(title = "blueberry", subTitle = "sub blueberry")
-        ))
-
-        dataset.add(mutableListOf(
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "banana", subTitle = "sub banana"),
-            ListItem(title = "apple", subTitle = "sub orange"),
-            ListItem(title = "blueberry", subTitle = "sub blueberry"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "orange", subTitle = "sub orange"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "banana", subTitle = "sub banana"),
-            ListItem(title = "apple", subTitle = "sub orange"),
-            ListItem(title = "blueberry", subTitle = "sub blueberry"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "orange", subTitle = "sub orange"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "banana", subTitle = "sub banana"),
-            ListItem(title = "apple", subTitle = "sub orange"),
-            ListItem(title = "blueberry", subTitle = "sub blueberry"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "orange", subTitle = "sub orange"),
-            ListItem(title = "apple", subTitle = "sub apple"),
-            ListItem(title = "banana", subTitle = "sub banana"),
-            ListItem(title = "apple", subTitle = "sub orange"),
-            ListItem(title = "blueberry", subTitle = "sub blueberry")
-        ))
     }
 }
